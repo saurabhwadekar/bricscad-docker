@@ -1,0 +1,32 @@
+services:
+  bricscad:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: bricscad
+
+    environment:
+      DISPLAY: ${DISPLAY}
+
+      # Mesa/OpenGL
+      LIBGL_ALWAYS_INDIRECT: "0"
+
+    volumes:
+      # X11 display
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./files:/files
+
+      # BricsCAD configuration persistence
+      - bricscad-config:/root
+
+    # GPU access
+    devices:
+      - /dev/dri:/dev/dri
+
+    stdin_open: true
+    tty: true
+
+
+volumes:
+  bricscad-config:
